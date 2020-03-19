@@ -23,8 +23,7 @@ app.use(passport.initialize());
 // passport-jwt configuration...
 require("./Strategies/passport")(passport);
 app.use(cors({
-  origin: 'https://postbook.netlify.com',
-  credentials: true,
+  
 }));
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin","*"); // update to match the domain you will make the request from
