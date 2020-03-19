@@ -42,6 +42,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", auth);
 app.use("/api/photo", photo);
 
-app.listen(port, () => {
-  console.log(`Server is running at ${port}`);
+app.listen(port,
+  function () {
+    var port = server.address().port;
+    console.log("Express is working on port " + port);
+  
 });
