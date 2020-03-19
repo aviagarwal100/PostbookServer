@@ -7,6 +7,7 @@ const key = require("../../setup/myurl");
 const multer = require("multer");
 const path = require("path");
 var fs = require("fs");
+var cors = require('cors')
 
 // multer...
 var storage = multer.diskStorage({
@@ -99,7 +100,7 @@ router.post("/register", (req, res) => {
 //@route - /api/auth/login
 //@desc - route for login
 //@access - PUBLIC
-router.post("/login", (req, res) => {
+router.post("/login",cors(), (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   Person.findOne({ email })
