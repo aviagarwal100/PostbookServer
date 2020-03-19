@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Server for postbook",
   "main": "index.js",
+  "engines": {
+    "node": "13.6.0",
+    "npm": "6.13.4"
+  },
   "scripts": {
     "start": "node index.js"
   },
