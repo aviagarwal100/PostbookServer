@@ -177,7 +177,7 @@ router.post("/upload", (req, res) => {
           });
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log("error in server" +err));
   });
 });
 //@type - POST
