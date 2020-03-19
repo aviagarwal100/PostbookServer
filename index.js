@@ -9,6 +9,8 @@ const auth = require("./routes/api/auth");
 const photo = require("./routes/api/photo");
 var cors = require('cors');
 
+app.set(port)
+
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -49,7 +51,7 @@ app.use(function(req, res, next) {
 app.use("/api/auth", auth);
 app.use("/api/photo", photo);
 
-app.listen(port,
+app.listen(app.get(port),
   function () {    
     console.log("Express is working on port " + port);
   
