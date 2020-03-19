@@ -16,7 +16,6 @@ app.use(function(req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  next();  
 });
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
