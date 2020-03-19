@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
 const bodyparser = require("body-parser");
-const db = require("./setup/myurl").mongodbURL;
+const db = process.env.MONGODB_URI||require("./setup/myurl").mongodbURL;
 const port = process.env.PORT || 5000;
 const app = express();
 const auth = require("./routes/api/auth");
@@ -43,8 +43,7 @@ app.use("/api/auth", auth);
 app.use("/api/photo", photo);
 
 app.listen(port,
-  function () {
-    var port = server.address().port;
+  function () {    
     console.log("Express is working on port " + port);
   
 });
