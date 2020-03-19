@@ -96,11 +96,16 @@ router.post("/register", (req, res) => {
       console.log(err);
     });
 });
+var corsOptions = {
+  origin: 'https://postbook.netlify.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 //@type - POST
 //@route - /api/auth/login
 //@desc - route for login
 //@access - PUBLIC
-router.post("/login",cors(), (req, res) => {
+router.post("/login",cors(corsOptions), (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   Person.findOne({ email })
