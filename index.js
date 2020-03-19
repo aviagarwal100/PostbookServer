@@ -8,10 +8,10 @@ const app = express();
 const auth = require("./routes/api/auth");
 const photo = require("./routes/api/photo");
 var cors = require('cors');
+var MongoClient = require('mongodb').MongoClient;
 
 
-mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+MongoClient.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("mongobd connected successfully...");
   })
