@@ -48,6 +48,7 @@ app.use(function(req, res, next) {
   next();
 });
 // actual route ...
+app.use(cors());
 app.use("/api/auth", auth);
 app.use("/api/photo", photo);
 

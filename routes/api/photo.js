@@ -7,6 +7,7 @@ const key = require("../../setup/myurl");
 const multer = require("multer");
 const path = require("path");
 var fs = require("fs");
+var cors = require('cors');
 
 //import schema
 const Person = require("../../models/Person");
@@ -30,7 +31,7 @@ var upload = multer({ storage: storage }).single("profilepic");
 //@route - /api/photo/upload
 //@desc - route for upload
 //@access - PRIVATE
-router.post("/upload", (req, res) => {
+router.post("/upload",cors(), (req, res) => {
   var user = {};
   upload(req, res, error => {
     user = JSON.parse(req.body.user);
