@@ -11,7 +11,7 @@ var cors = require('cors');
 var MongoClient = require('mongodb').MongoClient;
 
 
-MongoClient.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+MongoClient.connect(db, { useNewUrlParser: true })
   .then(() => {
     console.log("mongobd connected successfully...");
   })
