@@ -8,6 +8,7 @@ const app = express();
 const auth = require("./routes/api/auth");
 const photo = require("./routes/api/photo");
 var cors = require('cors');
+const proxy = require('http-proxy-middleware')
 
 app.set("port",port);
 
@@ -48,8 +49,11 @@ app.use(function(req, res, next) {
   next();
 });
 // actual route ...
-app.use("/api/auth", auth);
+//app.use("/api/auth", auth);
 app.use("/api/photo", photo);
+
+app.use(proxy(['/api/auth' ], { target: 'http://localhost:5000' }),auth);
+
 
 app.listen(app.get("port"),
   function () {    
