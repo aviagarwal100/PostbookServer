@@ -8,8 +8,12 @@ const app = express();
 const auth = require("./routes/api/auth");
 const photo = require("./routes/api/photo");
 var cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 app.set("port",port);
+app.use(fileUpload({
+  createParentPath: true
+}));
 
 
 mongoose
@@ -48,7 +52,6 @@ app.use(function(req, res, next) {
   next();
 });
 // actual route ...
-app.use(cors());
 app.use("/api/auth", auth);
 app.use("/api/photo", photo);
 

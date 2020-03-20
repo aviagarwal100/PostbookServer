@@ -1,71 +1,42 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const passport = require("passport");
-const jsonwt = require("jsonwebtoken");
-const key = require("../../setup/myurl");
-const multer = require("multer");
-const path = require("path");
-var fs = require("fs");
-var cors = require('cors');
 
 //import schema
 const Person = require("../../models/Person");
 const Picture = require("../../models/Picture");
 
-// multer...
-var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "./routes/public/myupload");
-  },
-  filename: function(req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
-var upload = multer({ storage: storage }).single("profilepic");
+
 
 //@type - POST
 //@route - /api/photo/upload
 //@desc - route for upload
 //@access - PRIVATE
-router.post("/upload",cors(), (req, res) => {
-  var user = {};
-  upload(req, res, error => {
-    user = JSON.parse(req.body.user);
-    Person.findOne({ email: user.email })
+router.post("/upload", (req, res) => {
+  var text=req.body.user
+    Person.findOne({ email: text })
       .then(person => {
         if (person) {
           const picture = new Picture({
-            user: user._id,
+            user: person._id,
             title: req.body.title,
-            name: user.username
-          });
-
-          picture.profilepic.data = fs.readFileSync(
-            `./routes/public/myupload/${req.file.filename}`
-          );
-          picture.profilepic.contentType = `image/${path
-            .extname(req.file.originalname)
-            .replace(".", "")}`;
-          picture.save();
-          fs.unlinkSync(`./routes/public/myupload/${req.file.filename}`);
-          if (error) {
+            name: person.username
+          });          
+          picture.profilepic.data = req.files.profilepic.data
+          picture.profilepic.contentType = req.files.profilepic.mimetype
+          picture.save().then(()=>{
+            res.json({
+              message: "Successfully uploaded file ....",
+              filename: `myupload/${req.files.profilepic.name}`
+            });
+          }).catch(()=>{
             res.json({
               message: "error"
             });
-          } else {
-            res.json({
-              message: "Successfully uploaded file ....",
-              filename: `myupload/${req.file.filename}`
-            });
-          }
+          })        
+          
         }
       })
       .catch(err => console.log(err));
-  });
 });
 //@type - POST
 //@route - /api/photo/post

@@ -4,23 +4,9 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jsonwt = require("jsonwebtoken");
 const key = require("../../setup/myurl");
-const multer = require("multer");
-const path = require("path");
-var fs = require("fs");
 
-// multer...
-var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "./routes/public/myupload");
-  },
-  filename: function(req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  }
-});
-var upload = multer({ storage: storage }).single("profilepic");
+
+
 
 //@type - GET
 //@route - /api/auth
@@ -150,35 +136,26 @@ router.post("/login", (req, res) => {
 //@desc - route for upload
 //@access - PRIVATE
 router.post("/upload", (req, res) => {
-  var user = {};
-  upload(req, res, error => {
-    user = JSON.parse(req.body.body.user);
-    Person.findOne({ email: user.email })
+  var text=req.body.user
+  var user={}
+    Person.findOne({ email: text })
       .then(person => {
-        person.profilepic.data = fs.readFileSync(
-          `./routes/public/myupload/${req.body.file.filename}`
-        );
-        person.profilepic.contentType = `image/${path
-          .extname(req.body.file.originalname)
-          .replace(".", "")}`;
+        person.profilepic.data = req.files.profilepic.data
+        person.profilepic.contentType = req.files.profilepic.mimetype
         person.profilepic1 = null;
-        person.save();
         user = person;
-        fs.unlinkSync(`./routes/public/myupload/${req.body.file.filename}`);
-        if (error) {
+        person.save().then(()=>res.json({
+          message: "Successfully uploaded file ....",
+          filename: `myupload/${req.files.profilepic.name}`,
+          user: user
+        })).catch(err=>{
           res.json({
             message: "error"
           });
-        } else {
-          res.json({
-            message: "Successfully uploaded file ....",
-            filename: `myupload/${req.body.file.filename}`,
-            user: user
-          });
-        }
+        })
       })
       .catch(err => console.log("error in server" +err));
-  });
+  
 });
 //@type - POST
 //@route - /api/auth/delete
