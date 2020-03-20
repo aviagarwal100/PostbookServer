@@ -152,19 +152,19 @@ router.post("/login", (req, res) => {
 router.post("/upload", (req, res) => {
   var user = {};
   upload(req, res, error => {
-    user = JSON.parse(req.body.user);
+    user = JSON.parse(req.body.body.user);
     Person.findOne({ email: user.email })
       .then(person => {
         person.profilepic.data = fs.readFileSync(
-          `./routes/public/myupload/${req.file.filename}`
+          `./routes/public/myupload/${req.body.file.filename}`
         );
         person.profilepic.contentType = `image/${path
-          .extname(req.file.originalname)
+          .extname(req.body.file.originalname)
           .replace(".", "")}`;
         person.profilepic1 = null;
         person.save();
         user = person;
-        fs.unlinkSync(`./routes/public/myupload/${req.file.filename}`);
+        fs.unlinkSync(`./routes/public/myupload/${req.body.file.filename}`);
         if (error) {
           res.json({
             message: "error"
@@ -172,7 +172,7 @@ router.post("/upload", (req, res) => {
         } else {
           res.json({
             message: "Successfully uploaded file ....",
-            filename: `myupload/${req.file.filename}`,
+            filename: `myupload/${req.body.file.filename}`,
             user: user
           });
         }
