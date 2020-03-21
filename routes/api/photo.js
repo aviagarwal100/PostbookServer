@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+var cors = require('cors');
 
 
 //import schema
@@ -43,7 +44,7 @@ router.post("/upload", (req, res) => {
 //@route - /api/photo/post
 //@desc - route for upload
 //@access - PRIVATE
-router.post("/post", (req, res) => {
+router.post("/post",cors(), (req, res) => {
   Person.findOne({ email: req.body.email })
     .then(person => {
       Picture.find()
