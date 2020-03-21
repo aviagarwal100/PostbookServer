@@ -70,5 +70,40 @@ router.post("/post", (req, res) => {
       console.log(err);
     });
 });
+//@type - POST
+//@route - /api/photo/userphoto
+//@desc - route for user photo delete
+//@access - PRIVATE
+router.post("/userphoto", (req, res) => {
+  Person.findOne({ email: req.body.user.email }).then(person=>{
+    Picture.findByIdAndRemove({_id:req.body.id}).then(()=>{
+      Picture.find()
+      .then(picture => {
+        const array = {
+          picture: [],
+          error: "success",
+          original: picture
+        };
+        const len = picture.length;
+        for (let i = 0; i < len; i++) {
+          if (picture[i].user.toString() === req.body._id.toString()) {
+            array.picture.unshift(picture[i]);
+          }
+        }
+        if (array.picture.length === 0) {
+          res.json({ error: "error" });
+        } else {
+          res.json(array);
+        }
+      })
+      .catch(err => console.log(err));
+    }).catch(err=>{
+      console.log(err)
+    })   
+  }).catch(err=>{
+    console.log(err);
+  })
+
+});
 
 module.exports = router;
