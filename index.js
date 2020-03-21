@@ -53,16 +53,6 @@ app.get("/", (req, res) => {
 
 // actual route ...
 app.use("/api/auth", auth);
-app.use(cors());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin","https://postbk.herokuapp.com"); // update to match the domain you will make the request from
-  res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
 app.use("/api/photo", photo);
 
 app.listen(app.get("port"),
