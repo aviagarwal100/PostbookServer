@@ -9,16 +9,7 @@ const auth = require("./routes/api/auth");
 const photo = require("./routes/api/photo");
 var cors = require('cors');
 const fileUpload = require('express-fileupload');
-app.use(cors());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin","https://postbk.herokuapp.com"); // update to match the domain you will make the request from
-  res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+
 
 app.set("port",port);
 app.use(fileUpload({
@@ -35,7 +26,16 @@ mongoose
     console.log(err);
   });
 
-
+  app.use(cors());
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin","https://postbk.herokuapp.com"); // update to match the domain you will make the request from
+    res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+  });
 // passport middleware
 app.use(passport.initialize());
 // passport-jwt configuration...
